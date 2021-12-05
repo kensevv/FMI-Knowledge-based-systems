@@ -1,12 +1,12 @@
 <template>
-  Home
-  {{ testFetch }}
+  {{ test }}
 </template>
 
 <script lang="ts" setup>
 import {testFun} from "../services/request-service";
 
-const testFetch = await testFun()
+const test = await testFun()
+console.log(test);
 </script>
 
 <style scoped>

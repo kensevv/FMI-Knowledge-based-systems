@@ -13,7 +13,7 @@
           <img src="./assets/1.png">
         </q-avatar>
       </q-toolbar>
-      <q-tabs >
+      <q-tabs>
         <q-route-tab to="/home" label="Home"/>
         <q-route-tab to="/administration" label="Administration"/>
         <q-route-tab to="/upload-files" label="Upload files"/>
@@ -21,7 +21,9 @@
     </q-header>
 
     <q-page-container>
-      <router-view/>
+      <suspense>
+        <router-view/>
+      </suspense>
     </q-page-container>
 
     <q-footer elevated class="bg-grey-8 text-white">
