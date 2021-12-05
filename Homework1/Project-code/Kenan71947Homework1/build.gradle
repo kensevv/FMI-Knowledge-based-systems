@@ -1,0 +1,37 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0-RC2'
+    id 'application'
+    id("com.github.johnrengelman.shadow") version "6.1.0"
+}
+
+group 'org.kenan'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+application {
+    mainClass.set("MainKt")
+    mainClassName = "MainKt"
+    applicationName = "71947HW1"
+
+}
+tasks {
+    shadowJar {
+        archiveBaseName.set("71947HW1")
+        mergeServiceFiles()
+    }
+}
