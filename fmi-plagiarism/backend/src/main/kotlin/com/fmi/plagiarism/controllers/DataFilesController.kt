@@ -36,7 +36,10 @@ class DataFilesController {
     fun getAllPlagiarismNotDetectedDataFiles() = dataFilesService.fetchAllPlagiarismNotDetectedDataFiles()
 
     @PostMapping("/file-upload")
-    fun handleFileUpload(@RequestPart file: ByteArray) {
-        dataFilesService.createNewDataFileRecord(fileService.extractTextFromFileByteArray(file), "TEST NAME")
+    fun handleFileUpload(
+        @RequestPart file: ByteArray,
+        @RequestHeader(required = false, value = "File-Name") fileName: String?
+    ) {
+        dataFilesService.createNewDataFileRecord(fileService.extractTextFromFileByteArray(file), fileName)
     }
 }

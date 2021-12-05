@@ -8,6 +8,7 @@
             label="Upload files"
             multiple
             field-name="file"
+            :headers="(file) => getHeader(file)"
             square
             bordered
             accept=".txt"
@@ -29,7 +30,10 @@ const onRejected = (rejectedFiles) => {
     message: `Txt files expected. ${rejectedFiles[0]?.file?.name} has wrong file format.`
   })
 }
-
+const getHeader = (file) => {
+  console.log(file);
+  return [{name: 'File-Name', value: file[0].name}]
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,9 @@
 <template>
   <q-page padding>
     <div class="row">
-      <q-table title="Data Files" :rows="data"></q-table>
+      <div class="col">
+        <q-table title="Data Files" :rows="data"></q-table>
+      </div>
     </div>
   </q-page>
 </template>

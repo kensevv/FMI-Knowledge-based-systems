@@ -27,10 +27,10 @@ class DataFilesService : Base() {
     fun fetchAllPlagiarismNotDetectedDataFiles(): List<DataFiles> =
         db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetchInto(DataFiles::class.java)
 
-    fun createNewDataFileRecord(text: String, fileName: String) = db.newRecord(
+    fun createNewDataFileRecord(text: String, fileName: String?) = db.newRecord(
         DATA_FILES, DataFilesRecord(
             id = UUID.randomUUID().toString(),
-            fileName = fileName,
+            fileName = fileName ?: "Unknown",
             uploadDate = LocalDate.now(),
             text = text,
             verified = "N",
