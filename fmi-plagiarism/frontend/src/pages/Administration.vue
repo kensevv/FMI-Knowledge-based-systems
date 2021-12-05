@@ -19,13 +19,21 @@
             </q-input>
           </template>
           <template v-slot:body-cell-manage="props">
-            <q-td class="text-left">
+            <q-td :class="getRowClass(props.row)">
               <q-btn color="secondary" icon="info_outline" no-caps flat size="15px" round
                      @click="()=>showContent(props.row)">
                 <q-tooltip style="font-size: large">
                   Click to see file content
                 </q-tooltip>
               </q-btn>
+            </q-td>
+          </template>
+          <template v-slot:body-cell="props">
+            <q-td
+                :props="props"
+                :class="getRowClass(props.row)"
+            >
+              {{ props.value }}
             </q-td>
           </template>
         </q-table>
@@ -64,6 +72,12 @@ const columns = [
   {name: "plagiarism", label: "Plagiarism Detected", field: "plagiarismDetected", align: "left", sortable: true},
   {name: "manage"}
 ]
+
+const getRowClass = (dataFileRecord: DataFiles) => {
+  if (dataFileRecord.plagiarismDetected === 'Y') return 'bg-red-2'
+  if (dataFileRecord.verified === 'N') return 'bg-blue-2'
+  return 'bg-green-2'
+}
 </script>
 
 <style scoped>

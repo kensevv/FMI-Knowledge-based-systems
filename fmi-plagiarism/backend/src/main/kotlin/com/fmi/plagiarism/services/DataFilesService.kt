@@ -34,7 +34,7 @@ class DataFilesService : Base() {
             uploadDate = LocalDate.now(),
             text = text,
             verified = "N",
-            plagiarismDetected = "N"
+            plagiarismDetected = null
         )
     ).insert()
 }
