@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<information_schema>
+    <schemata>
+        <schema>
+            <catalog_name></catalog_name>
+            <schema_name>PLAGIARISM</schema_name>
+            <comment></comment>
+        </schema>
+    </schemata>
+</information_schema>
