@@ -1,12 +1,12 @@
 <template>
-  <q-layout view="hHh lpR fff">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <q-toolbar-title shrink>
           <q-avatar>
             <img src="./assets/3.png">
           </q-avatar>
-          Knowledge Based Systems - Plagiarism
+          Plagiarism System
         </q-toolbar-title>
         <q-space/>
         <q-avatar square style="width: 130px; height: 60px; float: right; margin: 5px">
@@ -26,13 +26,18 @@
       </suspense>
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer elevated class="bg-grey-7 text-white">
       <q-toolbar>
         <q-toolbar-title shrink>
           <q-avatar square style="width: 130px; height: 60px;">
             <img src="./assets/7.jpg">
           </q-avatar>
+          Knowledge Based Systems Project
         </q-toolbar-title>
+        <q-space/>
+        Kenan, Veselin, Luchezar.
+        <br>
+        @All rights reserved 2021.
       </q-toolbar>
     </q-footer>
 

@@ -2,9 +2,6 @@ import axios from 'axios'
 
 export const api = axios.create({baseURL: '/api'})
 
-export const testFun = async (): Promise<string> =>
-    api.get<string>(`test`).then(r => r.data)
-
 export const getAllDataFiles = async (): Promise<DataFiles[]> =>
     api.get<DataFiles[]>(`/all`).then(r => r.data)
 
