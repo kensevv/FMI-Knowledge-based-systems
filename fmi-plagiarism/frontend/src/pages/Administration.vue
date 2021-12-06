@@ -9,8 +9,20 @@
                  :pagination="{rowsPerPage: 0}"
                  no-data-label="I didn't find anything for you"
                  bordered
-                 :rows="data"
+                 :rows="tableContent"
                  :columns="columns">
+          <template v-slot:top-left>
+            <div class="row">
+              <div class="q-table__title">Data Files</div>
+              <div style="margin-left: 150px; border-bottom: 1px solid grey">
+                Filters
+                <q-checkbox v-model="verified" label="Verified" color="green"/>
+                <q-checkbox v-model="toBeVerified" label="To be verified"/>
+                <q-checkbox v-model="plagiarismDetected" label="Plagiarism Detected" color="red"/>
+                <q-checkbox v-model="plagiarismNotDetected" label="Plagiarism Not Detected" color="green"/>
+              </div>
+            </div>
+          </template>
           <template v-slot:top-right>
             <q-input v-model="filter" clearable debounce="300" dense placeholder="Search">
               <template v-slot:append>
@@ -45,15 +57,37 @@
 
 <script lang="ts" setup>
 import {getAllDataFiles} from "../services/request-service";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useQuasar} from "quasar";
 import FileContentDialog from "../components/FileContentDialog.vue";
 
 const quasar = useQuasar()
 
 const data = await getAllDataFiles()
+const tableContent = ref<DataFiles[]>(data)
 
 const filter = ref('')
+
+const verified = ref<boolean>(true)
+const toBeVerified = ref<boolean>(true)
+const plagiarismDetected = ref<boolean>(true)
+const plagiarismNotDetected = ref<boolean>(true)
+
+watch([verified, toBeVerified, plagiarismDetected, plagiarismNotDetected], () => {
+  tableContent.value = data
+  if (verified.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.verified === 'N')
+  }
+  if (toBeVerified.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.verified === 'Y')
+  }
+  if (plagiarismDetected.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismDetected === 'N' || dataFile.plagiarismDetected == null)
+  }
+  if (plagiarismNotDetected.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismDetected === 'Y' || dataFile.plagiarismDetected == null)
+  }
+})
 
 const showContent = (dataFileRecord: DataFiles) => {
   quasar.dialog({
