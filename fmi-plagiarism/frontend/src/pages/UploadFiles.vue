@@ -1,9 +1,10 @@
 <template>
   <q-page padding>
     <div class="row">
-      <div class="col-5"></div>
+      <div class="col-4"></div>
       <div class="col">
         <q-uploader
+            style="width: 75vh"
             url="http://localhost:8080/api/file-upload"
             label="Upload files"
             multiple

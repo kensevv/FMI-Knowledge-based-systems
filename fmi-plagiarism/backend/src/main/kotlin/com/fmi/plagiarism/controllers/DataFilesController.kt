@@ -17,9 +17,6 @@ class DataFilesController {
     @Autowired
     private lateinit var fileService: FileService
 
-    @GetMapping("/test")
-    fun test() = "working"
-
     @GetMapping("/all")
     fun getAllDataFiles() = dataFilesService.fetchAllDataFiles()
 
@@ -39,7 +36,6 @@ class DataFilesController {
     fun handleFileUpload(
         @RequestPart file: ByteArray,
         @RequestHeader(required = false, value = "File-Name") fileName: String?
-    ) {
-        dataFilesService.createNewDataFileRecord(fileService.extractTextFromFileByteArray(file), fileName)
-    }
+    ) = dataFilesService.createNewDataFileRecord(fileService.extractTextFromFileByteArray(file), fileName)
+
 }
