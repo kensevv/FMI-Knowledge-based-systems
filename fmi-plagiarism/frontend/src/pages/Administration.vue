@@ -9,6 +9,7 @@
                  :pagination="{rowsPerPage: 0}"
                  no-data-label="I didn't find anything for you"
                  bordered
+                 :filter="filter"
                  :rows="tableContent"
                  :columns="columns">
           <template v-slot:top-left>
