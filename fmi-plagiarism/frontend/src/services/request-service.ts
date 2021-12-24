@@ -16,3 +16,10 @@ export const getAllPlagiarismDetectedDataFiles = async (): Promise<DataFiles[]> 
 
 export const getAllPlagiarismNotDetectedDataFiles = async (): Promise<DataFiles[]> =>
     api.get<DataFiles[]>(`/plagiarism-not-detected`).then(r => r.data)
+
+export const checkSelectedDataFiles = async (selectedFiles: DataFiles[]) =>
+    api.post(`check-selected`, JSON.stringify(selectedFiles), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(r => r.data)

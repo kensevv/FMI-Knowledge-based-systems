@@ -51,4 +51,6 @@ class DataFilesService : Base() {
             plagiarismDetected = null
         )
     ).insert()
+
+    fun fetchOneRecordById(uuid: String) = db.fetchOne(DATA_FILES, DATA_FILES.ID.eq(uuid))
 }

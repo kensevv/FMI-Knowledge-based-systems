@@ -9,6 +9,8 @@
                  :pagination="{rowsPerPage: 0}"
                  no-data-label="I didn't find anything for you"
                  bordered
+                 selection="multiple"
+                 v-model:selected="selected"
                  :filter="filter"
                  :rows="tableContent"
                  :columns="columns">
@@ -23,6 +25,14 @@
                 <q-checkbox v-model="plagiarismNotDetected" label="Plagiarism Not Detected" color="green"/>
               </div>
             </div>
+          </template>
+          <template v-slot:bottom>
+            <q-btn :disable="selected.length <= 0"
+                   flat
+                   color="primary"
+                   icon="plagiarism"
+                   label="check selected"
+                   @click="checkSelected"/>
           </template>
           <template v-slot:top-right>
             <q-input v-model="filter" clearable debounce="300" dense placeholder="Search">
@@ -57,17 +67,21 @@
 </template>
 
 <script lang="ts" setup>
-import {getAllDataFiles} from "../services/request-service";
+import {checkSelectedDataFiles, getAllDataFiles} from "../services/request-service";
 import {ref, watch} from "vue";
 import {useQuasar} from "quasar";
 import FileContentDialog from "../components/FileContentDialog.vue";
 
 const quasar = useQuasar()
 
-const data = await getAllDataFiles()
-const tableContent = ref<DataFiles[]>(data)
+const tableContent = ref<DataFiles[]>(await getAllDataFiles())
 
 const filter = ref('')
+const selected = ref([])
+const checkSelected = async () => {
+  await checkSelectedDataFiles(selected.value);
+  tableContent.value = await getAllDataFiles()
+}
 
 const verified = ref<boolean>(true)
 const toBeVerified = ref<boolean>(true)

@@ -1,7 +1,7 @@
 --changeset 1:kenan
 create table DATA_FILES
 (
-    ID                  VARCHAR2(100),
+    ID                  VARCHAR2(100) PRIMARY KEY,
     FILE_NAME           VARCHAR2(50),
     UPLOAD_DATE         DATE,
     TEXT                BLOB,

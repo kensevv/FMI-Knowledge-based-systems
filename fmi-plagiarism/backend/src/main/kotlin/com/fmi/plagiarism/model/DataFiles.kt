@@ -3,9 +3,9 @@ package com.fmi.plagiarism.model
 import java.time.LocalDate
 
 data class DataFiles(
-    val id: String? = null,
-    val fileName: String? = null,
-    val uploadDate: LocalDate? = null,
+    val id: String,
+    val fileName: String,
+    val uploadDate: LocalDate,
     val fileContent: String? = null,
     val verified: String? = null,
     val plagiarismDetected: String? = null

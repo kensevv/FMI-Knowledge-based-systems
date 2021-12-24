@@ -1,7 +1,9 @@
 package com.fmi.plagiarism.controllers
 
+import com.fmi.plagiarism.model.DataFiles
 import com.fmi.plagiarism.services.DataFilesService
 import com.fmi.plagiarism.services.FileService
+import com.fmi.plagiarism.services.PlagiarismService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -13,6 +15,10 @@ class DataFilesController {
 
     @Autowired
     private lateinit var dataFilesService: DataFilesService
+
+    @Autowired
+    private lateinit var plagiarismService: PlagiarismService
+
 
     @Autowired
     private lateinit var fileService: FileService
@@ -38,4 +44,8 @@ class DataFilesController {
         @RequestHeader(required = false, value = "File-Name") fileName: String?
     ) = dataFilesService.createNewDataFileRecord(fileService.extractTextFromFileByteArray(file), fileName)
 
+
+    @PostMapping("/check-selected")
+    fun checkSelectedDataFiles(@RequestBody selectedDataFiles: List<DataFiles>) =
+        plagiarismService.runCheckOnSelectedFiles(selectedDataFiles)
 }
