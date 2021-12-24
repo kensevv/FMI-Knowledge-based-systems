@@ -2,7 +2,7 @@ type DataFiles = {
     id: string,
     fileName: string,
     uploadDate: Date,
-    text: string,
+    fileContent: string,
     verified: string,
     plagiarismDetected: string
 }

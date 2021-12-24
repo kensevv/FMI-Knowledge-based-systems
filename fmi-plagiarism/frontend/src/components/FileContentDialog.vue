@@ -6,7 +6,7 @@
       </q-card-section>
       <q-separator/>
       <q-card-section style="overflow-wrap: break-word;" class="scroll">
-        {{ dataFile.text }}
+        {{ dataFile.fileContent }}
       </q-card-section>
       <q-separator/>
       <q-card-actions align="right">

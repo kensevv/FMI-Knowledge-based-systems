@@ -9,30 +9,44 @@ import java.util.*
 
 @Service
 class DataFilesService : Base() {
+    private fun DataFilesRecord.mapToInternalModel() =
+        this.into(DataFiles::class.java).copy(
+            fileContent = String(this.text!!)
+        )
 
-    fun fetchAllDataFiles(): List<DataFiles> = db.selectFrom(DATA_FILES).fetchInto(DataFiles::class.java)
+    fun fetchAllDataFiles(): List<DataFiles> = db.selectFrom(DATA_FILES).fetch().map {
+        it.mapToInternalModel()
+    }
 
     fun fetchDataFilesById(id: String): DataFiles? =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.ID.eq(id)).fetchOneInto(DataFiles::class.java)
+        db.selectFrom(DATA_FILES).where(DATA_FILES.ID.eq(id)).fetchOne()?.mapToInternalModel()
 
     fun fetchAllVerifiedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("Y")).fetchInto(DataFiles::class.java)
+        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("Y")).fetch().map {
+            it.mapToInternalModel()
+        }
 
     fun fetchAllNonVerifiedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetchInto(DataFiles::class.java)
+        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetch().map {
+            it.mapToInternalModel()
+        }
 
     fun fetchAllPlagiarismDetectedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.PLAGIARISM_DETECTED.eq("Y")).fetchInto(DataFiles::class.java)
+        db.selectFrom(DATA_FILES).where(DATA_FILES.PLAGIARISM_DETECTED.eq("Y")).fetch().map {
+            it.mapToInternalModel()
+        }
 
     fun fetchAllPlagiarismNotDetectedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetchInto(DataFiles::class.java)
+        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetch().map {
+            it.mapToInternalModel()
+        }
 
-    fun createNewDataFileRecord(text: String, fileName: String?) = db.newRecord(
+    fun createNewDataFileRecord(fileContent: String, fileName: String?) = db.newRecord(
         DATA_FILES, DataFilesRecord(
             id = UUID.randomUUID().toString(),
             fileName = fileName ?: "Unknown",
             uploadDate = LocalDate.now(),
-            text = text,
+            text = fileContent.toByteArray(),
             verified = "N",
             plagiarismDetected = null
         )
