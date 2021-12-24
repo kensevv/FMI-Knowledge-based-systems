@@ -69,18 +69,40 @@
 <script lang="ts" setup>
 import {checkSelectedDataFiles, getAllDataFiles} from "../services/request-service";
 import {ref, watch} from "vue";
-import {useQuasar} from "quasar";
+import {QSpinnerGears, useQuasar} from "quasar";
 import FileContentDialog from "../components/FileContentDialog.vue";
 
 const quasar = useQuasar()
 
-const tableContent = ref<DataFiles[]>(await getAllDataFiles())
+const data = ref(await getAllDataFiles())
+const tableContent = ref<DataFiles[]>(data.value)
 
 const filter = ref('')
+
 const selected = ref([])
 const checkSelected = async () => {
+  const notify = quasar.notify({
+    spinner: QSpinnerGears,
+    group: false,
+    message: 'Running plagiarism detection on selected files!...',
+  })
   await checkSelectedDataFiles(selected.value);
-  tableContent.value = await getAllDataFiles()
+  notify({
+    message: "Plagiarism Detection ran successfully!",
+    type: "positive",
+  })
+  data.value = await getAllDataFiles()
+  tableContent.value = data.value
+  selected.value = []
+}
+
+const showContent = (dataFileRecord: DataFiles) => {
+  quasar.dialog({
+    component: FileContentDialog,
+    componentProps: {
+      'dataFile': {...dataFileRecord},
+    }
+  })
 }
 
 const verified = ref<boolean>(true)
@@ -89,7 +111,7 @@ const plagiarismDetected = ref<boolean>(true)
 const plagiarismNotDetected = ref<boolean>(true)
 
 watch([verified, toBeVerified, plagiarismDetected, plagiarismNotDetected], () => {
-  tableContent.value = data
+  tableContent.value = data.value
   if (verified.value == false) {
     tableContent.value = tableContent.value.filter(dataFile => dataFile.verified === 'N')
   }
@@ -104,14 +126,6 @@ watch([verified, toBeVerified, plagiarismDetected, plagiarismNotDetected], () =>
   }
 })
 
-const showContent = (dataFileRecord: DataFiles) => {
-  quasar.dialog({
-    component: FileContentDialog,
-    componentProps: {
-      'dataFile': {...dataFileRecord},
-    }
-  })
-}
 
 const columns = [
   {name: "id", label: "UUID", field: "id", align: "left", sortable: true},
