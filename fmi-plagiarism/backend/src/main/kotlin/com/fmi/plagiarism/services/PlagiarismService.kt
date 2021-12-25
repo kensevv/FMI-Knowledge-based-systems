@@ -1,8 +1,10 @@
 package com.fmi.plagiarism.services
 
 import com.fmi.plagiarism.model.DataFiles
+import liquibase.pro.packaged.it
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class PlagiarismService : Base() {
@@ -11,16 +13,20 @@ class PlagiarismService : Base() {
 
     fun runCheckOnSelectedFiles(selectedDataFiles: List<DataFiles>) {
         val allDataFiles: List<DataFiles> = dataFilesService.fetchAllDataFiles()
-        selectedDataFiles.forEach {
-            dataFilesService.fetchOneRecordById(it.id)?.apply {
+
+        selectedDataFiles.forEach { selectedFile ->
+            dataFilesService.fetchOneRecordById(selectedFile.id)?.apply {
                 verified = "Y"
-                plagiarismDetected = if (getPlagiarismPercentageForFile(it, allDataFiles) > 50) "Y" else "N"
+                plagiarismRate = allDataFiles.filter {
+                    it.id != selectedFile.id
+                }.map { comparingFile ->
+                    getPlagiarismRate(selectedFile, comparingFile)
+                }.maxOrNull()?.toBigDecimal() ?: BigDecimal.ZERO
             }?.update()
         }
     }
 
-    private fun getPlagiarismPercentageForFile(file: DataFiles, allDataFiles: List<DataFiles>): Double {
+    private fun getPlagiarismRate(selectedFile: DataFiles, comparingFile: DataFiles): Double {
         return 60.0
     }
-
 }

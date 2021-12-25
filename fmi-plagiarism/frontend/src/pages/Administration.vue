@@ -14,6 +14,11 @@
                  :filter="filter"
                  :rows="tableContent"
                  :columns="columns">
+          <template v-slot:body-cell-verified="props">
+            <td :class="getRowClass(props.row)">
+              <q-checkbox disable :model-value="props.value"/>
+            </td>
+          </template>
           <template v-slot:top-left>
             <div class="row">
               <div class="q-table__title">Data Files</div>
@@ -21,8 +26,8 @@
                 Filters
                 <q-checkbox v-model="verified" label="Verified" color="green"/>
                 <q-checkbox v-model="toBeVerified" label="To be verified"/>
-                <q-checkbox v-model="plagiarismDetected" label="Plagiarism Detected" color="red"/>
-                <q-checkbox v-model="plagiarismNotDetected" label="Plagiarism Not Detected" color="green"/>
+                <q-checkbox v-model="plagiarismAbove50" label="Plagiarism >= 50%" color="red"/>
+                <q-checkbox v-model="plagiarismUnder50" label="Plagiarism < 50%" color="green"/>
               </div>
             </div>
           </template>
@@ -107,22 +112,22 @@ const showContent = (dataFileRecord: DataFiles) => {
 
 const verified = ref<boolean>(true)
 const toBeVerified = ref<boolean>(true)
-const plagiarismDetected = ref<boolean>(true)
-const plagiarismNotDetected = ref<boolean>(true)
+const plagiarismAbove50 = ref<boolean>(true)
+const plagiarismUnder50 = ref<boolean>(true)
 
-watch([verified, toBeVerified, plagiarismDetected, plagiarismNotDetected], () => {
+watch([verified, toBeVerified, plagiarismAbove50, plagiarismUnder50], () => {
   tableContent.value = data.value
   if (verified.value == false) {
-    tableContent.value = tableContent.value.filter(dataFile => dataFile.verified === 'N')
+    tableContent.value = tableContent.value.filter(dataFile => !dataFile.verified)
   }
   if (toBeVerified.value == false) {
-    tableContent.value = tableContent.value.filter(dataFile => dataFile.verified === 'Y')
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.verified)
   }
-  if (plagiarismDetected.value == false) {
-    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismDetected === 'N' || dataFile.plagiarismDetected == null)
+  if (plagiarismAbove50.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismRate < 50 || !dataFile.plagiarismRate)
   }
-  if (plagiarismNotDetected.value == false) {
-    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismDetected === 'Y' || dataFile.plagiarismDetected == null)
+  if (plagiarismUnder50.value == false) {
+    tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismRate >= 50 || !dataFile.plagiarismRate)
   }
 })
 
@@ -132,13 +137,20 @@ const columns = [
   {name: "fileName", label: "File Name", field: "fileName", align: "left", sortable: true},
   {name: "uploadDate", label: "Upload Date", field: "uploadDate", align: "left", sortable: true},
   {name: "verified", label: "Verified", field: "verified", align: "left", sortable: true},
-  {name: "plagiarism", label: "Plagiarism Detected", field: "plagiarismDetected", align: "left", sortable: true},
+  {
+    name: "plagiarism",
+    label: "Plagiarism Rate",
+    field: "plagiarismRate",
+    align: "left",
+    sortable: true,
+    format: (rate) => `${rate ?? 0}%`
+  },
   {name: "manage"}
 ]
 
 const getRowClass = (dataFileRecord: DataFiles) => {
-  if (dataFileRecord.plagiarismDetected === 'Y') return 'bg-red-2'
-  if (dataFileRecord.verified === 'N') return 'bg-blue-2'
+  if (dataFileRecord.plagiarismRate >= 50) return 'bg-red-2'
+  if (!dataFileRecord.verified) return 'bg-blue-2'
   return 'bg-green-2'
 }
 </script>

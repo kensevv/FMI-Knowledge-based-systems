@@ -9,6 +9,7 @@ import java.util.*
 
 @Service
 class DataFilesService : Base() {
+
     private fun DataFilesRecord.mapToInternalModel() =
         this.into(DataFiles::class.java).copy(
             fileContent = String(this.text!!)
@@ -21,26 +22,6 @@ class DataFilesService : Base() {
     fun fetchDataFilesById(id: String): DataFiles? =
         db.selectFrom(DATA_FILES).where(DATA_FILES.ID.eq(id)).fetchOne()?.mapToInternalModel()
 
-    fun fetchAllVerifiedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("Y")).fetch().map {
-            it.mapToInternalModel()
-        }
-
-    fun fetchAllNonVerifiedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetch().map {
-            it.mapToInternalModel()
-        }
-
-    fun fetchAllPlagiarismDetectedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.PLAGIARISM_DETECTED.eq("Y")).fetch().map {
-            it.mapToInternalModel()
-        }
-
-    fun fetchAllPlagiarismNotDetectedDataFiles(): List<DataFiles> =
-        db.selectFrom(DATA_FILES).where(DATA_FILES.VERIFIED.eq("N")).fetch().map {
-            it.mapToInternalModel()
-        }
-
     fun createNewDataFileRecord(fileContent: String, fileName: String?) = db.newRecord(
         DATA_FILES, DataFilesRecord(
             id = UUID.randomUUID().toString(),
@@ -48,7 +29,7 @@ class DataFilesService : Base() {
             uploadDate = LocalDate.now(),
             text = fileContent.toByteArray(),
             verified = "N",
-            plagiarismDetected = null
+            plagiarismRate = null
         )
     ).insert()
 

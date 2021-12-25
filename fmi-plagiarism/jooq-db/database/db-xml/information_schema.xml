@@ -67,7 +67,7 @@
             <numeric_precision>0</numeric_precision>
             <numeric_scale>0</numeric_scale>
             <ordinal_position>3</ordinal_position>
-            <is_nullable>true</is_nullable>
+            <is_nullable>false</is_nullable>
             <comment></comment>
         </column>
         <column>
@@ -80,7 +80,7 @@
             <numeric_precision>0</numeric_precision>
             <numeric_scale>0</numeric_scale>
             <ordinal_position>4</ordinal_position>
-            <is_nullable>true</is_nullable>
+            <is_nullable>false</is_nullable>
             <comment></comment>
         </column>
         <column>
@@ -93,17 +93,17 @@
             <numeric_precision>0</numeric_precision>
             <numeric_scale>0</numeric_scale>
             <ordinal_position>5</ordinal_position>
-            <is_nullable>true</is_nullable>
-            <column_default>'''N'''</column_default>
+            <is_nullable>false</is_nullable>
+            <column_default>'''N'' '</column_default>
             <comment></comment>
         </column>
         <column>
             <table_catalog></table_catalog>
             <table_schema>PLAGIARISM</table_schema>
             <table_name>DATA_FILES</table_name>
-            <column_name>PLAGIARISM_DETECTED</column_name>
-            <data_type>char</data_type>
-            <character_maximum_length>1</character_maximum_length>
+            <column_name>PLAGIARISM_RATE</column_name>
+            <data_type>numeric</data_type>
+            <character_maximum_length>0</character_maximum_length>
             <numeric_precision>0</numeric_precision>
             <numeric_scale>0</numeric_scale>
             <ordinal_position>6</ordinal_position>

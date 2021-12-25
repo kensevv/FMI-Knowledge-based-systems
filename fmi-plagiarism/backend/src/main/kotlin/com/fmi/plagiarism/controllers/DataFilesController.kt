@@ -26,18 +26,6 @@ class DataFilesController {
     @GetMapping("/all")
     fun getAllDataFiles() = dataFilesService.fetchAllDataFiles()
 
-    @GetMapping("/verified")
-    fun getAllVerifiedDataFiles() = dataFilesService.fetchAllVerifiedDataFiles()
-
-    @GetMapping("/non-verified")
-    fun getAllNonVerifiedDataFiles() = dataFilesService.fetchAllNonVerifiedDataFiles()
-
-    @GetMapping("/plagiarism-detected")
-    fun getAllPlagiarismDetectedDataFiles() = dataFilesService.fetchAllPlagiarismDetectedDataFiles()
-
-    @GetMapping("/plagiarism-not-detected")
-    fun getAllPlagiarismNotDetectedDataFiles() = dataFilesService.fetchAllPlagiarismNotDetectedDataFiles()
-
     @PostMapping("/file-upload")
     fun handleFileUpload(
         @RequestPart file: ByteArray,

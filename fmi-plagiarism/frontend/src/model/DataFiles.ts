@@ -3,6 +3,6 @@ type DataFiles = {
     fileName: string,
     uploadDate: Date,
     fileContent: string,
-    verified: string,
-    plagiarismDetected: string
+    verified: boolean,
+    plagiarismRate: number
 }
