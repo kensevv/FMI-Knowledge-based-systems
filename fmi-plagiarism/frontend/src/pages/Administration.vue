@@ -143,7 +143,7 @@ const columns = [
     field: "plagiarismRate",
     align: "left",
     sortable: true,
-    format: (rate) => `${rate ?? 0}%`
+    format: (rate) => rate ? `${rate}%` : ''
   },
   {name: "manage"}
 ]
