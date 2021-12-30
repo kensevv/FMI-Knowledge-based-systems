@@ -1,7 +1,7 @@
 package com.fmi.plagiarism.services
 
+import com.fmi.plagiarism.algorithm.DistanceFinder
 import com.fmi.plagiarism.model.DataFiles
-import liquibase.pro.packaged.it
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -10,6 +10,9 @@ import java.math.BigDecimal
 class PlagiarismService : Base() {
     @Autowired
     private lateinit var dataFilesService: DataFilesService
+
+    @Autowired
+    private lateinit var distanceFinder: DistanceFinder
 
     fun runCheckOnSelectedFiles(selectedDataFiles: List<DataFiles>) {
         val allDataFiles: List<DataFiles> = dataFilesService.fetchAllDataFiles()
@@ -20,13 +23,9 @@ class PlagiarismService : Base() {
                 plagiarismRate = allDataFiles.filter {
                     it.id != selectedFile.id
                 }.map { comparingFile ->
-                    getPlagiarismRate(selectedFile, comparingFile)
+                    distanceFinder.findPercentageOfPlagiarism(selectedFile.fileContent!!, comparingFile.fileContent!!) * 100
                 }.maxOrNull()?.toBigDecimal() ?: BigDecimal.ZERO
             }?.update()
         }
-    }
-
-    private fun getPlagiarismRate(selectedFile: DataFiles, comparingFile: DataFiles): Double {
-        return 60.0
     }
 }

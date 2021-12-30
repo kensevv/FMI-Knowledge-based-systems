@@ -26,8 +26,8 @@
                 Filters
                 <q-checkbox v-model="verified" label="Verified" color="green"/>
                 <q-checkbox v-model="toBeVerified" label="To be verified"/>
-                <q-checkbox v-model="plagiarismAbove50" label="Plagiarism >= 50%" color="red"/>
-                <q-checkbox v-model="plagiarismUnder50" label="Plagiarism < 50%" color="green"/>
+                <q-checkbox v-model="plagiarismAbove70" label="Plagiarism >= 70%" color="red"/>
+                <q-checkbox v-model="plagiarismUnder70" label="Plagiarism < 70%" color="green"/>
               </div>
             </div>
           </template>
@@ -112,10 +112,10 @@ const showContent = (dataFileRecord: DataFiles) => {
 
 const verified = ref<boolean>(true)
 const toBeVerified = ref<boolean>(true)
-const plagiarismAbove50 = ref<boolean>(true)
-const plagiarismUnder50 = ref<boolean>(true)
+const plagiarismAbove70 = ref<boolean>(true)
+const plagiarismUnder70 = ref<boolean>(true)
 
-watch([verified, toBeVerified, plagiarismAbove50, plagiarismUnder50], () => {
+watch([verified, toBeVerified, plagiarismAbove70, plagiarismUnder70], () => {
   tableContent.value = data.value
   if (verified.value == false) {
     tableContent.value = tableContent.value.filter(dataFile => !dataFile.verified)
@@ -123,10 +123,10 @@ watch([verified, toBeVerified, plagiarismAbove50, plagiarismUnder50], () => {
   if (toBeVerified.value == false) {
     tableContent.value = tableContent.value.filter(dataFile => dataFile.verified)
   }
-  if (plagiarismAbove50.value == false) {
+  if (plagiarismAbove70.value == false) {
     tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismRate < 50 || !dataFile.plagiarismRate)
   }
-  if (plagiarismUnder50.value == false) {
+  if (plagiarismUnder70.value == false) {
     tableContent.value = tableContent.value.filter(dataFile => dataFile.plagiarismRate >= 50 || !dataFile.plagiarismRate)
   }
 })
@@ -143,13 +143,13 @@ const columns = [
     field: "plagiarismRate",
     align: "left",
     sortable: true,
-    format: (rate) => rate ? `${rate}%` : ''
+    format: (rate) => rate != null ? `${rate}%` : ''
   },
   {name: "manage"}
 ]
 
 const getRowClass = (dataFileRecord: DataFiles) => {
-  if (dataFileRecord.plagiarismRate >= 50) return 'bg-red-2'
+  if (dataFileRecord.plagiarismRate >= 70) return 'bg-red-2'
   if (!dataFileRecord.verified) return 'bg-blue-2'
   return 'bg-green-2'
 }
